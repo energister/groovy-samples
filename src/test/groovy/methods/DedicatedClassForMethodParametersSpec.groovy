@@ -19,7 +19,7 @@ class DedicatedClassForMethodParametersSpec extends Specification {
     }
 
     String test(Map arguments = [:]) {
-        test(arguments as TestMethodParameters)
+        test(new TestMethodParameters(arguments))
     }
 
     def "May be invoked with no arguments (default values)"() {
@@ -48,7 +48,7 @@ class DedicatedClassForMethodParametersSpec extends Specification {
 
         then:
         GroovyCastException ex = thrown()
-        ex.message.contains("Error casting map to methods")
+        ex.message == "Cannot cast object 'some string' with class 'java.lang.String' to class 'int'"
     }
 
     def "May be invoked with non-existent arguments"() {
@@ -56,7 +56,7 @@ class DedicatedClassForMethodParametersSpec extends Specification {
         test(first: 500, nonExistingParameter: "value")
 
         then:
-        GroovyCastException ex = thrown()
-        ex.message.contains("Error casting map to methods")
+        MissingPropertyException ex = thrown()
+        ex.message.startsWith("No such property: nonExistingParameter")
     }
 }
