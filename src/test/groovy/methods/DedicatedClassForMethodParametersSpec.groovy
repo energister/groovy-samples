@@ -5,9 +5,9 @@ import spock.lang.Specification
 
 /**
  * Same as {@link MethodWithNamedArgumentsSpec}
- * but this approach doesn't allow to add non-existing arguments to the method
+ * but doesn't allow to add non-existing arguments to the method
  */
-class MethodWithSafeNamedArgumentsSpec extends Specification {
+class DedicatedClassForMethodParametersSpec extends Specification {
 
     class TestMethodParameters {
         int first = 10
