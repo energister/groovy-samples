@@ -2,7 +2,7 @@ package spock
 
 import spock.lang.Specification
 
-class ExceptionVerificationTest extends Specification {
+class ExceptionVerificationSpec extends Specification {
 
     def "no exceptions"() {
         when:

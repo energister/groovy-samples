@@ -1,7 +1,7 @@
 import groovy.transform.TypeChecked
 import spock.lang.Specification
 
-class ListTest extends Specification {
+class ListSpec extends Specification {
 
     def 'plus method creates a new list'() {
         List<Number> initialList = [3, 1, 4]
