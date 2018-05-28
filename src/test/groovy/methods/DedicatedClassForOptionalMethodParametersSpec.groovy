@@ -18,7 +18,11 @@ class DedicatedClassForOptionalMethodParametersSpec extends Specification {
         "test('$required', ${optionalArguments.first}, ${optionalArguments.second})"
     }
 
-    String test(String required, Map optionalArguments = [:]) {
+    // for some reason Groovy requires a map
+    // which comprise named arguments (http://docs.groovy-lang.org/latest/html/documentation/#_named_arguments)
+    // to be defined as a first parameter
+    // regardless of where such arguments are positioned in the method invocation
+    String test(Map optionalArguments = [:], String required) {
         test(required, new TestMethodOptionalParameters(optionalArguments))
     }
 
@@ -27,49 +31,33 @@ class DedicatedClassForOptionalMethodParametersSpec extends Specification {
         test('required') == "test('required', 10, 20)"
     }
 
-    def "May not be invoked with positional parameters"() {
-        when:
-        test('required', first: 300, second: 400)
-
-        then:
-        MissingMethodException ex = thrown()
-
-        // unexpected behaviour
-        ex.message.startsWith("No signature of method: " +
-                                      "methods.DedicatedClassForOptionalMethodParametersSpec.test() " +
-                                      "is applicable for argument types: " +
-                                      "(java.util.LinkedHashMap, java.lang.String) " +
-                                      "values: [[first:300, second:400], required]")
-        // Groovy changes order of the arguments in invocation!
+    def "May be invoked with all optional parameters"() {
+        expect:
+        test('required', first: 300, second: 400) == "test('required', 300, 400)"
     }
 
-    def "May be invoked with map as an optional parameters"() {
+    def "May be invoked with default second value"() {
         expect:
-        test('required', [first: 300, second: 400]) == "test('required', 300, 400)"
+        test('required', first: 500) == "test('required', 500, 20)"
     }
 
-    def "May be invoked with second default value"() {
+    def "May be invoked with default first value"() {
         expect:
-        test('required', [first: 500]) == "test('required', 500, 20)"
-    }
-
-    def "May be invoked with first default value"() {
-        expect:
-        test('required', [second: 600]) == "test('required', 10, 600)"
+        test('required', second: 600) == "test('required', 10, 600)"
     }
 
     def "May not be invoked with the value of invalid type"() {
         when:
-        test('required', [first: "some string"])
+        test('required', first: "some string")
 
         then:
         GroovyCastException ex = thrown()
         ex.message == "Cannot cast object 'some string' with class 'java.lang.String' to class 'int'"
     }
 
-    def "May be invoked with non-existent arguments"() {
+    def "May not be invoked with non-existent parameters"() {
         when:
-        test('required', [first: 500, nonExistingParameter: "value"])
+        test('required', first: 500, nonExistingParameter: "value")
 
         then:
         MissingPropertyException ex = thrown()

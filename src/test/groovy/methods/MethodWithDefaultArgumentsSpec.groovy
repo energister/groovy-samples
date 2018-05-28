@@ -3,7 +3,7 @@ package methods
 import spock.lang.Specification
 
 /**
- * http://docs.groovy-lang.org/latest/html/documentation/#_default_arguments
+ * See http://docs.groovy-lang.org/latest/html/documentation/#_default_arguments
  */
 class MethodWithDefaultArgumentsSpec extends Specification {
 

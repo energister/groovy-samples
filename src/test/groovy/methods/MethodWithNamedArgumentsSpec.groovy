@@ -4,7 +4,7 @@ import org.codehaus.groovy.runtime.typehandling.GroovyCastException
 import spock.lang.Specification
 
 /**
- * http://docs.groovy-lang.org/latest/html/documentation/#_named_arguments
+ * See http://docs.groovy-lang.org/latest/html/documentation/#_named_arguments
  */
 class MethodWithNamedArgumentsSpec extends Specification {
 
