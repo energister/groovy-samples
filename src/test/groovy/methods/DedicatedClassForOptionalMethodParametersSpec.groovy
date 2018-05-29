@@ -14,16 +14,20 @@ class DedicatedClassForOptionalMethodParametersSpec extends Specification {
         int second = 20
     }
 
-    String test(String required, TestMethodOptionalParameters optionalArguments) {
-        "test('$required', ${optionalArguments.first}, ${optionalArguments.second})"
-    }
-
     // for some reason Groovy requires a map
     // which comprise named arguments (http://docs.groovy-lang.org/latest/html/documentation/#_named_arguments)
     // to be defined as a first parameter
     // regardless of where such arguments are positioned in the method invocation
     String test(Map optionalArguments = [:], String required) {
-        test(required, new TestMethodOptionalParameters(optionalArguments))
+        doTest(required, new TestMethodOptionalParameters(optionalArguments))
+    }
+
+    /**
+     * Hide internal implementation (with the TestMethodOptionalParameters)
+     * by marking method as private.
+     */
+    private String doTest(String required, TestMethodOptionalParameters optionalArguments) {
+        "test('$required', ${optionalArguments.first}, ${optionalArguments.second})"
     }
 
     def "May be invoked with no arguments (default values)"() {
